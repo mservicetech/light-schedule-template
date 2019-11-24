@@ -1,0 +1,58 @@
+#--------------------------------------------------------------------------------
+# service.yml
+#--------------------------------------------------------------------------------
+service.singletons:
+  - com.networknt.utility.Decryptor:
+      - com.networknt.decrypt.AESDecryptor
+
+  - com.networknt.db.GenericDataSource:
+      - com.networknt.db.SqlServerDataSource:
+          - java.lang.String: SqlServerDataSource
+
+
+  - com.networknt.eventuate.jdbc.EventuateSchema:
+      - com.networknt.eventuate.jdbc.EventuateSchema:
+          - java.lang.String: none
+
+  - com.networknt.tram.cdc.polling.connector.MessagePollingDataProvider:
+      - com.networknt.tram.cdc.polling.connector.MessagePollingDataProvider
+
+  - com.networknt.eventuate.server.common.PublishingStrategy:
+      - com.mservicetech.schedule.publisher.MileStonePublishingStrategy
+
+  - com.mservicetech.schedule.publisher.CdcPublisher:
+      - com.mservicetech.schedule.publisher.LocalCdcLogPublisher
+
+  # HandlerProvider implementation
+  - com.networknt.handler.HandlerProvider:
+      - com.mservicetech.schedule.CdcServer
+  # StartupHookProvider implementations, there are one to many and they are called in the same sequence defined.
+  - com.networknt.server.StartupHookProvider:
+      - com.mservicetech.schedule.CdcServerStartupHookProvider
+  # ShutdownHookProvider implementations, there are one to many and they are called in the same sequence defined.
+  - com.networknt.server.ShutdownHookProvider:
+      - com.mservicetech.schedule.CdcServerShutdownHookProvider
+# MiddlewareHandler implementations, the calling sequence is as defined in the request/response chain.
+
+
+#--------------------------------------------------------------------------------
+# datasource.yml
+#--------------------------------------------------------------------------------
+SqlServerDataSource:
+  DriverClassName: com.microsoft.sqlserver.jdbc.SQLServerDataSource
+  jdbcUrl: jdbc:sqlserver://sqlserver:1433;databaseName=oauth2
+  username: sa
+  maximumPoolSize: 2
+  connectionTimeout: 500
+
+#--------------------------------------------------------------------------------
+# secret.yml
+#--------------------------------------------------------------------------------
+secret.sqlServerPassword: CRYPT:KvCqO+PeCOHYrhsBbaKAeynTd+bp9lrzxT40gn8lV5k=
+
+server.httpsPort: 8445
+
+#--------------------------------------------------------------------------------
+# cdc.yml
+#--------------------------------------------------------------------------------
+cdc.pollingIntervalInMilliseconds: 10000

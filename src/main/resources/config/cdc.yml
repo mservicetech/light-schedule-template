@@ -1,0 +1,7 @@
+---
+maxEventsPerPolling: ${cdc.maxEventsPerPolling:3}
+maxAttemptsForPolling: ${cdc.maxAttemptsForPolling:5}
+pollingRetryIntervalInMilliseconds: ${cdc.pollingRetryIntervalInMilliseconds:20000}
+pollingIntervalInMilliseconds: ${cdc.pollingIntervalInMilliseconds:10000}
+
+
