@@ -5,7 +5,7 @@ It works as template for light-4j schedule service
 ## Project Structure diagram
 
 
-//TODO
+![diagram](doc/diagram.png)
 
 
 ## Service details
